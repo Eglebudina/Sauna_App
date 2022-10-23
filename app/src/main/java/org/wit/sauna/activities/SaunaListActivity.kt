@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.sauna.R
@@ -17,6 +19,7 @@ class SaunaListActivity : AppCompatActivity(), SaunaListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivitySaunaListBinding
+    private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +33,8 @@ class SaunaListActivity : AppCompatActivity(), SaunaListener {
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = SaunaAdapter(app.saunas.findAll(),this)
+
+        registerRefreshCallback()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -41,7 +46,7 @@ class SaunaListActivity : AppCompatActivity(), SaunaListener {
         when (item.itemId) {
             R.id.item_add -> {
                 val launcherIntent = Intent(this, SaunaActivity::class.java)
-                startActivityForResult(launcherIntent,0)
+                refreshIntentLauncher.launch(launcherIntent)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -50,11 +55,12 @@ class SaunaListActivity : AppCompatActivity(), SaunaListener {
     override fun onSaunaClick(sauna: SaunaModel) {
         val launcherIntent = Intent(this, SaunaActivity::class.java)
         launcherIntent.putExtra("sauna_edit", sauna)
-        startActivityForResult(launcherIntent,0)
+        refreshIntentLauncher.launch(launcherIntent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        binding.recyclerView.adapter?.notifyDataSetChanged()
-        super.onActivityResult(requestCode, resultCode, data)
+    private fun registerRefreshCallback() {
+        refreshIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { binding.recyclerView.adapter?.notifyDataSetChanged() }
     }
 }

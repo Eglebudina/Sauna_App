@@ -27,9 +27,11 @@ class SaunaMemStore : SaunaStore {
         if (foundSauna != null) {
             foundSauna.title = sauna.title
             foundSauna.description = sauna.description
+            foundSauna.image = sauna.image
             logAll()
         }
     }
+
 
     private fun logAll() {
         saunas.forEach { i("$it") }

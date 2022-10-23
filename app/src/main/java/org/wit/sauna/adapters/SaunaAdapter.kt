@@ -3,6 +3,7 @@ package org.wit.sauna.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import org.wit.sauna.databinding.CardSaunaBinding
 import org.wit.sauna.models.SaunaModel
 
@@ -34,6 +35,7 @@ class SaunaAdapter constructor(private var saunas: List<SaunaModel>,
         fun bind(sauna: SaunaModel, listener: SaunaListener) {
             binding.saunaTitle.text = sauna.title
             binding.description.text = sauna.description
+            Picasso.get().load(sauna.image).resize(200,200).into(binding.imageIcon)
             binding.root.setOnClickListener { listener.onSaunaClick(sauna) }
         }
     }
