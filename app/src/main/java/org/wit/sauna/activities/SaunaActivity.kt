@@ -83,6 +83,11 @@ class SaunaActivity : AppCompatActivity() {
 
         binding.saunaLocation.setOnClickListener {
             val location = Location(52.245696, -7.139102, 15f)
+            if (sauna.zoom != 0f) {
+                location.lat =  sauna.lat
+                location.lng = sauna.lng
+                location.zoom = sauna.zoom
+            }
             val launcherIntent = Intent(this, MapActivity::class.java)
                 .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
@@ -136,6 +141,9 @@ class SaunaActivity : AppCompatActivity() {
                             i("Got Location ${result.data.toString()}")
                             location = result.data!!.extras?.getParcelable("location")!!
                             i("Location == $location")
+                            sauna.lat = location.lat
+                            sauna.lng = location.lng
+                            sauna.zoom = location.zoom
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }

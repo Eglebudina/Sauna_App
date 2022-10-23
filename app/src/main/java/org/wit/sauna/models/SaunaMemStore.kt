@@ -28,6 +28,9 @@ class SaunaMemStore : SaunaStore {
             foundSauna.title = sauna.title
             foundSauna.description = sauna.description
             foundSauna.image = sauna.image
+            foundSauna.lat = sauna.lat
+            foundSauna.lng = sauna.lng
+            foundSauna.zoom = sauna.zoom
             logAll()
         }
     }

@@ -16,7 +16,8 @@ import org.wit.sauna.R
 import org.wit.sauna.models.Location
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback,
-    GoogleMap.OnMarkerDragListener {
+    GoogleMap.OnMarkerDragListener,
+    GoogleMap.OnMarkerClickListener {
 
     private lateinit var map: GoogleMap
     var location = Location()
@@ -41,6 +42,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,
         map.addMarker(options)
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, location.zoom))
         map.setOnMarkerDragListener(this)
+        map.setOnMarkerClickListener(this)
+    }
+
+    override fun onMarkerClick(marker: Marker): Boolean {
+        val loc = LatLng(location.lat, location.lng)
+        marker.snippet = "GPS : $loc"
+        return false
     }
 
     override fun onMarkerDragStart(marker: Marker) {
