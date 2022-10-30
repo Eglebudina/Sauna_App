@@ -1,5 +1,6 @@
-# sauna-21
+
 Sauna 2022 project, Android APP
+
 Features are:
 Sign Up or Login using email/password 
 Firebase user authentication
